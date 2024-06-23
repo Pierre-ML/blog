@@ -1,74 +1,38 @@
-/* Global styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-form label {
-    display: block;
-    margin-bottom: 8px;
-    color: #333;
-}
-
-form input[type="text"],
-form input[type="password"],
-form input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
+.article {
     border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    padding: 16px;
+    margin: 16px 0;
+    border-radius: 8px;
+    display: flex;
+    /* Utilisation de flexbox pour aligner les éléments */
+    align-items: center;
+    /* Centrer verticalement les éléments */
 }
 
-form input[type="submit"] {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+.article img {
+    width: 200px;
+    /* Largeur fixe pour l'image en paysage */
+    height: auto;
+    /* Hauteur automatique pour conserver le ratio */
+    object-fit: cover;
+    /* Assurer que l'image couvre bien l'espace */
+    margin-left: 16px;
+    /* Marge à gauche de l'image */
 }
 
-form input[type="submit"]:hover {
-    background-color: #45a049;
+.article-content {
+    flex: 1;
+    /* Permet au contenu de prendre l'espace restant */
 }
 
-a {
-    color: #4CAF50;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-top: 20px;
+.article h2 {
+    margin: 0;
+    /* Supprimer la marge par défaut */
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-.error-message {
-    color: red;
-    text-align: center;
-    margin-bottom: 20px;
+.article .date {
+    color: #777;
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    /* Espacement en bas de la date */
 }

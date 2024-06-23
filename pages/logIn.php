@@ -1,7 +1,14 @@
-<?php session_start(); ?>
+<?php 
+    session_start();
+    // Vérifier si l'utilisateur est authentifié
+    if (isset($_SESSION['isAuthenticated']) AND $_SESSION['isAuthenticated'] === true) {
+        header("Location: admin.php");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
-
+    
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

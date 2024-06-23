@@ -1,6 +1,11 @@
 <?php
 session_start();
 
+/*if (!isset($_SESSION['isAuthenticated']) || $_SESSION['isAuthenticated'] !== true) {
+    header("Location: admin.php");
+    exit();
+}*/
+
 try {
     $dsn = "mysql:host=localhost;dbname=blog";
     $username = "root";
@@ -89,19 +94,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
                         $stmt = $pdo->prepare("INSERT INTO user (fullname, user, password) VALUES (:fullname, :user, :password)");
                         $stmt->execute(['fullname' => $fullName, 'user' => $login, 'password' => $password]);
-
+                        $_SESSION['isAuthenticated'] = true;
+                        $_SESSION['fullname'] =  $fullName;
+                        $_SESSION['user_id'] = $user['id'];
                         header('Location: admin.php');
                         exit();
                     }
                 }
             }
         }
+    }else{
+        // Redirection vers le formulaire d'inscription en cas d'erreur
+        $_SESSION['fullName'] = $_POST['fullName'];
+        $_SESSION['login'] = $_POST['login'];
+        $_SESSION['password'] = $_POST['password'];
+        $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
+        header('Location: signUp.php');
+        exit();
+
     }
-    // Redirection vers le formulaire d'inscription en cas d'erreur
-    $_SESSION['fullName'] = $_POST['fullName'];
-    $_SESSION['login'] = $_POST['login'];
-    $_SESSION['password'] = $_POST['password'];
-    $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
-    header('Location: signUp.php');
-    exit();
+    
 }

@@ -1,4 +1,12 @@
-<?php session_start(); ?>
+<?php
+    session_start();
+    // Vérifier si l'utilisateur est authentifié
+    if (!isset($_SESSION['isAuthenticated']) || $_SESSION['isAuthenticated'] !== true) {
+        header("Location: logIn.php");
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,28 +18,66 @@
 </head>
 
 <body>
-    <h3>Bienvenu sur la page administrateur</h3>
+    <h3>Bienvenue <?php if (isset($_SESSION['fullname'])) : ?>
+                        <?php echo htmlspecialchars($_SESSION['fullname']); ?>
+                  <?php endif; ?>
+    </h3>
+    <?php if (isset($_SESSION['message']['true'])) : ?>
+        <p style='color: red;'><?php echo $_SESSION['message']['true']; ?></p>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['message']['false'])) : ?>
+        <p style='color: red;'><?php echo $_SESSION['message']['false']; ?></p>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['Errors']['database'])) : ?>
+        <p style='color: red;'><?php echo $_SESSION['Errors']['database']; ?></p>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['Errors']['upload'])) : ?>
+        <p style='color: red;'><?php echo $_SESSION['Errors']['upload']; ?></p>
+    <?php endif; ?>
+    <?php if (isset($_SESSION['Errors']['empty'])) : ?>
+        <p style='color: red;'><?php echo $_SESSION['Errors']['emptyr']; ?></p>
+    <?php endif; ?>
+
+    <a href="index.php">Acceuil</a>  |
+    <a href="logOut.php">Déconnexion</a>   |
+    <a href="articles.php">Voir vos articles</a>  |
     <h4>Postez un article :</h4>
     <form method="post" action="processing_admin.php" enctype="multipart/form-data">
-        <label for="titre">Postez un article :</label>
-        <input type="text" name="titre" id="titre">
+
+        <label for="titre">Titre de l'article :</label>
+        <input type="text" name="titre" id="titre" value="<?php echo isset($_SESSION['titre']) ? htmlspecialchars($_SESSION['titre']) : ''; ?>">
+        <?php if (isset($_SESSION['Errors']['titre'])) : ?>
+            <div class="error-message" style='color: red;'><?php echo $_SESSION['Errors']['titre']; ?></div><br>
+        <?php endif; ?>
         <hr><br>
 
+
         <label for="contenu">Contenu de l'article :</label>
-        <textarea name="contenu" id="contenu" rows="10" cols="50"></textarea>
+        <textarea name="contenu" id="contenu" rows="10" cols="50"><?php echo isset($_SESSION['contenu']) ? htmlspecialchars($_SESSION['contenu']) : ''; ?></textarea>
+        <?php if (isset($_SESSION['Errors']['contenu'])) : ?>
+            <div class="error-message" style='color: red;'><?php echo $_SESSION['Errors']['contenu']; ?></div><br>
+        <?php endif; ?>
         <hr>
 
         <label for="image">Choisissez une image de couverture pour votre article :</label>
         <input type="file" name="img" id="image">
+        <?php if (isset($_SESSION['Errors']['img'])) : ?>
+            <div class="error-message" style='color: red;'><?php echo $_SESSION['Errors']['img']; ?></div><br>
+        <?php endif; ?>
         <hr>
 
-        <label for="date">Date de publication :</label>
-        <input type="datetime-local" name="date" id="date">
-        <hr><br>
+        <input type="hidden" name="date" id="date" value="<?php echo date('Y-m-d H:i:s'); ?>">
 
         <input type="submit" value="Postez votre article">
     </form>
 </body>
 
 </html>
-<?php session_destroy(); ?>
+
+<?php
+    //unset($_SESSION['fullname']);
+    unset($_SESSION['message']);
+    unset($_SESSION['Errors']);
+    unset($_SESSION['titre']);
+    unset($_SESSION['contenu']);
+?>
